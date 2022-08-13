@@ -1,12 +1,13 @@
 # API_Data_Ingestion_To_Postgre
 
 
-#OVERVIEW
+# OVERVIEW
+
 In this project, it is shown how Data can be extracted from an API endpoint and the process is automated using 
 Python Programming Language to give data a structure and then Ingest the data to a Relational Database like Postgre SQL.
 
 
-#Details About The Methods And Variables Used
+# Details About The Methods And Variables Used
 
 => "keyring.set_password()" - This belongs to the 'keyword' library of python used to hide and save passwords and
                               other similar things like connection strings.
