@@ -1,13 +1,12 @@
 import psycopg2
 import requests
 import keyring
-import json
-import zlib
+
 
 # To Secure you credentials use the code below and run in your environment once.
 # after that use "keyring.get_password("postgre_password", "snehil_admin")"
 # instead of typing your password thereby not exposing the password.
-keyring.set_password("postgre_password", "snehil_admin", "Sv@7860507207")
+keyring.set_password("postgre_password", "snehil_admin", "<your password here>")        #You have to place your DB password here
 
 
 print("=====================================Connecting To PostGre SQL=========================================")
@@ -16,7 +15,7 @@ print("=====================================Connecting To PostGre SQL===========
 try:
     conn = psycopg2.connect(
        database="api_sample", user='postgres', password=keyring.get_password("postgre_password", "snehil_admin"), \
-       host='127.0.0.1', port= '5432'
+       host='<hostt IP>', port= '<port number>'
     )
     cursor = conn.cursor()                                 #Creating a cursor object using the cursor() method
     cursor.execute("select version()")                     #Executing an SQL function using the execute() method
@@ -43,21 +42,21 @@ print(".....Analyzing the Data and Creating Schema and Table.....")
 
 def schema_analyzation_table_creation():
     try:
-        create_statement = "CREATE TABLE dogs ( "
+        create_statement = "CREATE TABLE dogs ( "                                       # Variables for SQL statement generation.
         sql_statement = ""
         column_names = {}
-        column_names = set(response_json_format[1])                                      #SETTING BASE COLUMNS
+        column_names = set(response_json_format[1])                                     
 
         for i in response_json_format:
-            column_names.update(set(i))                                            #
+            column_names.update(set(i))                                                 # Setting Column Names.
 
         for j in column_names:
-            sql_statement = sql_statement + j + " VARCHAR,"
+            sql_statement = sql_statement + j + " VARCHAR,"                             # Now iterating through the set of column names for consolidated CREATE statement
 
         sql = (create_statement + sql_statement[0:-1] + " )")
 
-        cursor.execute("DROP TABLE IF EXISTS DOGS")             #Doping EMPLOYEE table if already exists.
-        cursor.execute(sql)                                     #Creating table as per requirement
+        cursor.execute("DROP TABLE IF EXISTS DOGS")                                     #Dropping DOGS table if already exists.
+        cursor.execute(sql)                                                             #Creating table as per requirement.
         conn.commit()
 
     except:
@@ -76,12 +75,12 @@ def data_ingestion():
         insert = ""
         values = ""
 
-        for l in response_json_format:
-            for key, value in l.items():
-               insert = insert + str(key) + ", "
+        for l in response_json_format:                                                 
+            for key, value in l.items():                                                     # Getting the key i.e. column name and value i.e. row data.
+               insert = insert + str(key) + ", "                                             # Mapping columns and Rows for API to correct columns and rows in the Postgre Table.
                values = values + "'" + (str(value).replace("'", "\"")) + "'" + ", "
             sql_insert_satatement = "INSERT INTO dogs ( " + insert[0:-2] + " ) VALUES ( " + values[0:-2] + ")"
-            cursor.execute(sql_insert_satatement)                          # Creating table as per requirement
+            cursor.execute(sql_insert_satatement)                                            # Creating table as per API data.
             conn.commit()
             insert = ""
             values = ""
@@ -99,12 +98,8 @@ def data_ingestion():
 def close_postgre_connection():
     conn.close()
     print("=====================================Connection is Closed.=========================================")
-# Connection established to: (
-#    'PostgreSQL 11.5, compiled by Visual C++ build 1914, 64-bit',
-# )
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     schema_analyzation_table_creation()
     data_ingestion()
