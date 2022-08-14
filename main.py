@@ -17,9 +17,9 @@ try:
        database="api_sample", user='postgres', password=keyring.get_password("postgre_password", "snehil_admin"), \
        host='<hostt IP>', port= '<port number>'
     )
-    cursor = conn.cursor()                                 #Creating a cursor object using the cursor() method
-    cursor.execute("select version()")                     #Executing an SQL function using the execute() method
-    data = cursor.fetchone()                               # Fetch a single row using fetchone() method.
+    cursor = conn.cursor()                                                             #Creating a cursor object using the cursor() method
+    cursor.execute("select version()")                                                 #Executing an SQL function using the execute() method
+    data = cursor.fetchone()                                                           # Fetch a single row using fetchone() method.
     print("Connection established to: ", data)
 
 except:
@@ -92,6 +92,14 @@ def data_ingestion():
     print("INGESTION OF DATA IS COMPLETE..........NOW GO AND HAVE A BEER")
 
 
+# -------------------------------------Export SQL Table To CSV-------------------------------------------
+    
+
+# def export_sql_to_csv():
+# to_csv = "COPY dogs TO 'C:\tmp\dogs.csv' DELIMITER ',' CSV HEADER;"
+# cursor.execute(to_csv)
+    
+    
 # --------------------------------------------#Closing the connection---------------------------------------
 
 
@@ -103,4 +111,5 @@ def close_postgre_connection():
 if __name__ == '__main__':
     schema_analyzation_table_creation()
     data_ingestion()
-    close_postgre_connection
+#     export_sql_to_csv()
+    close_postgre_connection()
