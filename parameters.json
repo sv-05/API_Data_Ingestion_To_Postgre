@@ -1,0 +1,28 @@
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "customerCode": {
+      "value": ""
+    },
+    "solutionCode": {
+      "value": ""
+    },
+    "locationCode": {
+       "value": ""
+    },
+    "environment": {
+       "value": ""
+    },
+    "email": {
+       "value": ""
+     },
+     "tags"
+        "value": {
+           "Owner": "",
+           "Environment": "",
+           "Description": "",
+           "Market": "",
+           "Practice": "",
+           "Project": ""
+         },
+      }
+}
