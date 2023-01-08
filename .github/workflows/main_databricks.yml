@@ -1,0 +1,55 @@
+name: Deploy RPM Resources
+
+on:
+  workflow_dispatch:
+    inputs:
+    Databricks_Deploy:
+        type: choice
+        description: 'Are you Deploying Databricks Workspace?'
+        options:
+        - 'Yes'
+        - 'No'
+        default: "Yes"
+        required: true
+        
+    AZURE_SUBSCRIPTION_ID:
+        description: 'Azure Subscription ID'
+        required: true
+
+    RG_NAME:
+        description: Resource Group Name'
+        required: true
+        
+jobs:
+  deploy1:
+  name: Azure Databricks
+  runs-on: ubuntu-latest
+
+  outputs:
+    <Here Goes reuired fields as Output say Tenant_ID storage account name etc.>
+    
+    
+ - name: ADB
+   id: adb
+   uses: azure/arm-deploy@v1
+   with:
+     subscriptionId: ${{ github.event.inputs.AZURE_SUBSCRIPTION_ID}}
+     resourceGroupName: ${{ github.event.inputs.RG_NAME}}
+     template: adb_folder/adb.bicep
+     parameters: <path>/parameters.json
+    failonstdErr: false
+    
+    if: ${{ github.event.inputs.Databricks_Deploy}}
+      name: <>
+      uses: <powershell script>
+      with:
+      inlinescript:
+         <any info which need to be>
+      <Other options also available like version etc.>
+
+
+
+    
+    
+
+  
