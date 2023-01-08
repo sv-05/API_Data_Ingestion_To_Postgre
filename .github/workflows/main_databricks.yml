@@ -1,0 +1,38 @@
+name: Deploy Databricks
+
+on:
+  workflow_dispatch:
+    inputs:
+      DataBricks_Deploy:
+        type: choice
+        description : "Shall we proceed to deploy Azure Databricks?"
+        options:
+        - "Yes"
+        - "No"
+        default: "Yes"
+        required: true
+        
+      AZURE_SUBSCRIPTION_ID:
+        description: "Please provide subscriptionID"
+        required: true
+        
+      RG_NAME:
+        description: "Please provide Resource Group"
+        required: true
+        
+jobs:
+  deploy:
+    name: Deploy Azure Databricks
+    id: adb
+    uses: azure/arm-deploy@1
+    with:
+      subscription_id: ${{ github.event.inputs.AZURE_SUBSCRIPTION_ID}}
+      recourceGroupName: ${{github.event.inputs.RG_NAME}}
+      template: ADB/bicep_files/adb.bicep
+      parameters: parameters.json ( But All required parameters are given here only )
+      
+  - if: ${{ github.event.inputs.DataBricks_Deploy == "Yes" }}
+    uses: powershell@1
+      with: <other requirements if any>
+        
+      
