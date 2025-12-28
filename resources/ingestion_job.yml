@@ -1,0 +1,18 @@
+resources:
+  jobs:
+    ingestion_job:
+      name: "API Ingestion to DBFS"
+      tasks:
+        - task_key: run_api_ingestion
+          new_cluster:
+            spark_version: 13.3.x-scala2.12
+            node_type_id: Standard_DS3_v2 # Standard Azure/AWS small instance
+            num_workers: 0 # Use "Single Node" to keep it free/cheap
+            custom_tags:
+              ResourceOwner: Snehil
+          spark_python_task:
+            python_file: ../main.py
+            # Here is where we "Senior-ify" it: pass DBFS paths as arguments
+            parameters: 
+              - "--output_path"
+              - "/dbfs/tmp/api_ingestion_results/"
