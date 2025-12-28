@@ -7,8 +7,3 @@ targets:
       host: https://dbc-2b5109c0-8126.cloud.databricks.com/ # Your personal Databricks URL
     mode: development
     default: true
-
-artifacts:
-  default:
-    type: whl
-    build: python setup.py bdist_wheel # If you want to package it as a library
