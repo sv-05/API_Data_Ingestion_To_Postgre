@@ -1,22 +1,38 @@
-name: Databricks-Asset-Bundle-Deploy
+name: Databricks-Asset-Bundle-CI-CD
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # This allows you to run it manually from the GitHub UI
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # KEEP THIS! It's your manual override button.
 
 jobs:
-  deploy:
-    name: "Deploy Bundle to Databricks"
+  lint:
+    name: "Code Standard Check"
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install Ruff
+        run: pip install ruff
+      - name: Run Ruff Linting
+        run: ruff check .
 
+  deploy:
+    name: "Deploy to Databricks"
+    runs-on: ubuntu-latest
+    needs: [lint] # Lint must pass before we deploy
+    # Only deploy on pushes to main or manual triggers, not on every PR check
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Setup Databricks CLI
         uses: databricks/setup-cli@main
-
       - name: Deploy Bundle
         run: databricks bundle deploy
         env:
